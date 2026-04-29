@@ -1,4 +1,4 @@
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLCWvVU8ti73MK6TcTu1_JXOVLB0DGelj5wjBLEJPrMpx5kN57ZKrxe0hxc4DEyHRZ/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_HSvinSMqVoQie1xNRVvlFkZ3RtYcOp8I5fwGQ_jVixc4fAmixL7y8JA1JxlV-mCg/exec";
 const MAKE_WEBHOOK_URL = "https://hook.eu2.make.com/pouqr3uhljbc4uwolam7tahxbd0dmwdn";
 
 // 6:00 PM hora Venezuela (GMT-4) = 22:00 UTC
