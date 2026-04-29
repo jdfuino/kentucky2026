@@ -17,14 +17,14 @@ const HORSES = {
     "10": "Wonder Dean",
     "11": "Incredibolt",
     "12": "Chief Wallabee",
-    "13": "Silent Tactic",
     "14": "Potente",
     "15": "Emerging Market",
     "16": "Pavlovian",
     "17": "Six Speed",
     "18": "Further Ado",
     "19": "Golden Tempo",
-    "20": "Fulleffort"
+    "20": "Fulleffort",
+    "21": "Great White"
 };
 
 let selectedPrimerLugar = null;
