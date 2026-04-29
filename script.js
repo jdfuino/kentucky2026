@@ -1,5 +1,3 @@
-// URL del Google Apps Script Web App
-// REEMPLAZAR con la URL que obtienes al desplegar el script en Google Apps Script
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNY9qyYd-g4xNN3SZpAcXjw5SCTU8sEozPFSrnrZBqGSzK40Zh0Nv0OcqHQ_OEuhC3/exec";
 const MAKE_WEBHOOK_URL = "https://hook.eu2.make.com/pouqr3uhljbc4uwolam7tahxbd0dmwdn";
 
@@ -30,9 +28,22 @@ let selectedPrimerLugar = null;
 let selectedSegundoLugar = null;
 
 function initializeApp() {
+    populateHorseSelects();
     setupHorseSelection();
     setupFormSubmission();
     setupInputEffects();
+}
+
+function populateHorseSelects() {
+    const selects = [document.getElementById('primerLugar'), document.getElementById('segundoLugar')];
+    selects.forEach(select => {
+        Object.entries(HORSES).forEach(([num, name]) => {
+            const option = document.createElement('option');
+            option.value = num;
+            option.textContent = `${num} - ${name}`;
+            select.appendChild(option);
+        });
+    });
 }
 
 function setupHorseSelection() {
@@ -196,6 +207,10 @@ function handleSuccessfulSubmission(username, email, ticketNumber) {
                 showAlert(data.message, "warning");
                 return;
             }
+            if (data.status === "error") {
+                showAlert(data.message || "❌ Error interno. Por favor intenta de nuevo más tarde.", "error");
+                return;
+            }
             if (data.status === "ok") {
                 sendConfirmationEmail(payload);
                 const msg = `✅ ¡Pronóstico registrado exitosamente!<br><br>
@@ -258,19 +273,19 @@ function validateInput(input) {
     const value = input.value.trim();
 
     if (input.id === 'username') {
-        input.style.borderColor = value.length < 3 ? '#e74c3c' : '#27ae60';
+        if (!value) input.style.borderColor = '';
+        else input.style.borderColor = value.length < 3 ? '#e74c3c' : '#27ae60';
     }
 
     if (input.id === 'email') {
-        input.style.borderColor = value && !isValidEmail(value) ? '#e74c3c' : '#27ae60';
+        if (!value) input.style.borderColor = '';
+        else input.style.borderColor = !isValidEmail(value) ? '#e74c3c' : '#27ae60';
     }
 
     if (input.id === 'ticketNumber') {
-        if (value && !/^\d{6,10}$/.test(value)) {
-            input.style.borderColor = '#f39c12';
-        } else if (value) {
-            input.style.borderColor = '#27ae60';
-        }
+        if (!value) input.style.borderColor = '';
+        else if (!/^\d{6,10}$/.test(value)) input.style.borderColor = '#f39c12';
+        else input.style.borderColor = '#27ae60';
     }
 }
 
