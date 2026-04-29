@@ -1,5 +1,8 @@
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNY9qyYd-g4xNN3SZpAcXjw5SCTU8sEozPFSrnrZBqGSzK40Zh0Nv0OcqHQ_OEuhC3/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLCWvVU8ti73MK6TcTu1_JXOVLB0DGelj5wjBLEJPrMpx5kN57ZKrxe0hxc4DEyHRZ/exec";
 const MAKE_WEBHOOK_URL = "https://hook.eu2.make.com/pouqr3uhljbc4uwolam7tahxbd0dmwdn";
+
+// 6:00 PM hora Venezuela (GMT-4) = 22:00 UTC
+const DEADLINE = new Date('2026-05-02T22:00:00Z');
 
 const HORSES = {
     "1": "Renegade",
@@ -32,6 +35,49 @@ function initializeApp() {
     setupHorseSelection();
     setupFormSubmission();
     setupInputEffects();
+    checkDeadline();
+}
+
+function checkDeadline() {
+    if (new Date() >= DEADLINE) {
+        closeForm();
+    } else {
+        startCountdown();
+    }
+}
+
+function closeForm() {
+    const countdown = document.getElementById('countdown-container');
+    const closedBanner = document.getElementById('closed-banner');
+    const form = document.querySelector('.prediction-form');
+    if (countdown) countdown.style.display = 'none';
+    if (closedBanner) closedBanner.style.display = 'block';
+    if (form) form.style.display = 'none';
+}
+
+function startCountdown() {
+    const container = document.getElementById('countdown-container');
+    if (container) container.style.display = 'block';
+
+    function updateDisplay() {
+        const diff = DEADLINE - new Date();
+        if (diff <= 0) {
+            clearInterval(interval);
+            closeForm();
+            return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    updateDisplay();
+    const interval = setInterval(updateDisplay, 1000);
 }
 
 function populateHorseSelects() {
@@ -170,6 +216,11 @@ function isValidEmail(email) {
 }
 
 function handleSuccessfulSubmission(username, email, ticketNumber) {
+    if (new Date() >= DEADLINE) {
+        closeForm();
+        return;
+    }
+
     const payload = {
         username,
         email,
@@ -201,6 +252,10 @@ function handleSuccessfulSubmission(username, email, ticketNumber) {
                 data = JSON.parse(text);
             } catch (e) {
                 showAlert("✅ ¡Pronóstico enviado! Buena suerte en el Kentucky Derby 🏇", "success");
+                return;
+            }
+            if (data.status === "cerrado") {
+                closeForm();
                 return;
             }
             if (data.status === "duplicado") {

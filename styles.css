@@ -291,6 +291,92 @@ p span {
     box-shadow: 0 0 10px rgba(231, 76, 60, 0.3) !important;
 }
 
+/* Cuenta regresiva */
+.countdown-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.countdown-label {
+    color: #ffd700;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.countdown-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px 16px;
+    min-width: 70px;
+}
+
+.countdown-block span {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1;
+}
+
+.countdown-block small {
+    font-size: 0.7rem;
+    color: #ffd700;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.countdown-sep {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffd700;
+    line-height: 1;
+    padding-bottom: 16px;
+}
+
+/* Banner de pronósticos cerrados */
+.closed-banner {
+    background: linear-gradient(135deg, #7b0000, #c0392b);
+    border-radius: 15px;
+    padding: 40px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);
+    animation: closedPulse 2s ease-in-out infinite;
+}
+
+.closed-banner small {
+    display: block;
+    font-size: 1rem;
+    font-weight: normal;
+    margin-top: 10px;
+    opacity: 0.9;
+}
+
+@keyframes closedPulse {
+    0%, 100% { box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4); }
+    50%       { box-shadow: 0 8px 40px rgba(192, 57, 43, 0.7); }
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .banner h1 {
@@ -299,5 +385,19 @@ p span {
 
     .prediction-form {
         padding: 25px;
+    }
+
+    .countdown-block {
+        min-width: 55px;
+        padding: 8px 10px;
+    }
+
+    .countdown-block span {
+        font-size: 1.5rem;
+    }
+
+    .closed-banner {
+        font-size: 1.4rem;
+        padding: 30px 20px;
     }
 }
